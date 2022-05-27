@@ -1,15 +1,22 @@
+# Md. Aminul Islam
+# 2018-1-68-051          
+
+
+
+# Sample User Input 
+##python Heart_Attack_Risk.py -ui [23,1,3,120,200,1,140,1,0,2.3,0,0,1]
+
 # Importing
 
 import sys
 import pandas as pd
 import numpy as np
+import csv
 
 from sklearn.model_selection import train_test_split
 from matplotlib import pyplot as plt
 from sklearn.metrics import accuracy_score
 from sklearn.neural_network import MLPClassifier
-
-
 
 
 # Read The Dataset
@@ -48,7 +55,7 @@ def data_cleaning(data):
     print("Total Rows of The Dataset", total_rows)
 
     # Removing Duplicate Rows
-    data.drop_duplicates(keep=False, inplace=True)
+    data.drop_duplicates(keep=False, inplace=True) ## by default
 
     # Total rows after removing duplicates
     total_rows_after_remove_duplicates = len(data.index)
@@ -105,7 +112,7 @@ def set_XY(train,test,features):
 ### Creating the neural network model
 
 def NNModel():
-    mlp = MLPClassifier(hidden_layer_sizes=(20, 20, 20), max_iter=900, activation='relu')
+    mlp = MLPClassifier(hidden_layer_sizes=(20, 20, 20), max_iter=900, activation='logistic')
     return mlp
 
 
@@ -132,15 +139,16 @@ def model_accuracy(y_test, y_pred):
     return score_NN
 
 
-'''
+
+
 def users_test(mlp,user_test):
     user_pred = mlp.predict(user_test)
     if user_pred[0]==1:
         print("There is Heart Risk. Consult With Doctor ASAP")
     elif user_pred[0]==0:
         print("Good News,You have no Heart Attack Risk. But Keep in touch with your Doctor")
-    print("\n\nUSer Prediction:\n", user_pred)
-'''
+        print("\n\nUSer Prediction:\n", user_pred)
+
 
 
 
@@ -155,7 +163,7 @@ def test_train_ration_bar_chart(train,test):
 
     tick_label = ['Train Dataset', 'Test Dataset']
 
-    plt.bar(x, y, tick_label=tick_label, width=0.6, color=['red', 'blue'])
+    plt.bar(x, y, tick_label=tick_label, width=0.6, color=['purple', 'red'])
 
     plt.title("Splitting The Dataset")
     plt.ylabel('Count Of The Dataset')
@@ -195,7 +203,7 @@ def age_range_heartAttack_BarChart(data):
 
     tick_label = ['10 - 30', '31 - 50', '51 - 70', '71 - 90']
 
-    plt.bar(x, y, tick_label=tick_label, width=0.6, color=['Green', 'purple', 'red', 'blue'])
+    plt.bar(x, y, tick_label=tick_label, width=0.6, color=['red', 'blue', 'Green', 'Yellow'])
 
     plt.ylabel("Number Of People Who Got Heart Attack")
     plt.xlabel('Age')
@@ -205,6 +213,17 @@ def age_range_heartAttack_BarChart(data):
 
 if __name__ == '__main__':
 
+    user_test = [[23, 1, 3, 120, 200, 1, 140, 1, 0, 2.3, 0, 0, 1]]
+    NumberOfParam = len(sys.argv)
+
+    for i in range(1, NumberOfParam):
+        if sys.argv[i].replace(' ', '') == "-ui":
+            user_test = (sys.argv[i + 1]).strip('[]')
+
+            user_test = list(map(float, user_test.split(",")))
+
+            user_test = [user_test]
+    
 
     filename="heart.csv"
 
@@ -228,6 +247,7 @@ if __name__ == '__main__':
     print()
     y_pred = get_prediction(mlp, x_test)
     print()
+    
     score_NN = model_accuracy(y_test, y_pred)
     print()
 
@@ -239,5 +259,4 @@ if __name__ == '__main__':
     exercise_pie_chart(data)
 
     age_range_heartAttack_BarChart(data)
-
 

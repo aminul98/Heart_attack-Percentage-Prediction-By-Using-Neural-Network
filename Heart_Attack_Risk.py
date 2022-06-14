@@ -1,8 +1,3 @@
-# Md. Aminul Islam
-# 2018-1-68-051          
-
-
-
 # Sample User Input 
 ##python Heart_Attack_Risk.py -ui [23,1,3,120,200,1,140,1,0,2.3,0,0,1]
 
